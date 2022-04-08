@@ -1,30 +1,32 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env  python3
 
-from _token import TOKEN
+try:
+    import settings
+except ImportError:
+    exit('Do cp settings.py.default settings.py and set token!')
+
+from _token import TOKEN, GROUP_ID
 from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.utils import get_random_id
 import logging
 
-GROUP_ID = '212456808'
-
 log = logging.getLogger('bot')
 
+
 def configure_logging():
+    log.setLevel(logging.DEBUG)
+
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
-
-    file_fandler = logging.FileHandler('bot.log')
-    file_fandler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
-
-    log.addHandler(stream_handler)
-    log.addHandler(file_fandler)
-
-    log.setLevel(logging.DEBUG)
     stream_handler.setLevel(logging.INFO)
+    log.addHandler(stream_handler)
+    datefmt = '%d/%m/%Y %H:%M'
+    file_fandler = logging.FileHandler('bot.log')
+    file_fandler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s', datefmt=datefmt))
     file_fandler.setLevel(logging.DEBUG)
-
+    log.addHandler(file_fandler)
 
 
 class Bot:
