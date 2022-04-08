@@ -5,8 +5,26 @@ from _token import TOKEN
 from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.utils import get_random_id
+import logging
 
 GROUP_ID = '212456808'
+
+log = logging.getLogger('bot')
+
+def configure_logging():
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
+
+    file_fandler = logging.FileHandler('bot.log')
+    file_fandler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
+
+    log.addHandler(stream_handler)
+    log.addHandler(file_fandler)
+
+    log.setLevel(logging.DEBUG)
+    stream_handler.setLevel(logging.INFO)
+    file_fandler.setLevel(logging.DEBUG)
+
 
 
 class Bot:
@@ -24,13 +42,18 @@ class Bot:
                 self.on_event(event=event)
             except Exception as exc:
                 print(f'exception - {exc}')
+                log.exception(f'event processing error - {exc}')
 
     def on_event(self, event):
         if event.type == VkBotEventType.MESSAGE_NEW:
             self.message_text = event.message.text
             self.reply_message(event)
+        else:
+            log.debug(f'I cant answer to this message - {event.type}')
+            # raise ValueError('WHAT a FACK???????????????')
 
     def reply_message(self, event):
+        log.info('send answer from bot')
         message = f'Все говорят "{self.message_text}", а ты купи слона!'
 
         self.api.messages.send(message=message,
@@ -42,6 +65,7 @@ class Bot:
 
 if __name__ == '__main__':
     try:
+        configure_logging()
         bot = Bot(group_id=GROUP_ID, token=TOKEN)
         bot.run()
     except Exception as exc:
