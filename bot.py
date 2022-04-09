@@ -6,6 +6,7 @@ try:
 except ImportError:
     exit('Do cp settings.py.default settings.py and set token!')
 
+# import vk_api
 from _token import TOKEN, GROUP_ID
 from vk_api import VkApi
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
@@ -40,6 +41,7 @@ class Bot:
 
     def run(self):
         for event in self.long_poller.listen():
+            # print(f'тестим ... {event}')
             try:
                 self.on_event(event=event)
             except Exception as exc:
@@ -56,11 +58,12 @@ class Bot:
 
     def reply_message(self, event):
         log.info('send answer from bot')
-        message = f'Все говорят "{self.message_text}", а ты купи слона!'
+        # message = f'Все говорят "{self.message_text}", а ты купи слона!'
 
-        self.api.messages.send(message=message,
+
+        self.api.messages.send(message=event.message.text,   # message=message,
                                random_id=get_random_id(),
-                               peer_id=event.object.message['from_id']
+                               peer_id=event.object.message['peer_id']
                                )
         self.message_text = None
 
