@@ -56,3 +56,6 @@ class Test1(TestCase):
             random_id=mock.ANY,
             peer_id=self.RAW_EVENT['object']['message']['peer_id']
         )
+
+    def test_reply_message(self):
+        pass
