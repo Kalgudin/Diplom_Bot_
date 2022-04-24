@@ -5,8 +5,12 @@ coverage==6.3.2
 distlib==0.3.4
 filelock==3.4.2
 idna==3.3
+peewee==3.14.10
+Pillow==9.1.0
 pipenv==2022.1.8
 platformdirs==2.5.0
+pony==0.7.16
+psycopg2-binary==2.9.3
 pycosat==0.6.3
 requests==2.27.1
 ruamel.yaml==0.17.21
@@ -16,6 +20,7 @@ virtualenv==20.13.1
 virtualenv-clone==0.5.7
 vk-api==11.9.7
 vkapi==1.1
+
 
 
 """
