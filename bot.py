@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env  python3
 import handlers
+from models import UserState
 
 try:
     import settings
@@ -29,12 +30,12 @@ def configure_logging():
     file_fandler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s', datefmt=datefmt))
     file_fandler.setLevel(logging.DEBUG)
     log.addHandler(file_fandler)
-class UserState:
-    '''Состояние пользователя в нутри сценария'''
-    def __init__(self, scenario_name, step_name, context=None):
-        self.scenario_name = scenario_name
-        self.step_name = step_name
-        self.context = context or {}
+# class UserState:
+#     '''Состояние пользователя в нутри сценария'''
+#     def __init__(self, scenario_name, step_name, context=None):
+#         self.scenario_name = scenario_name
+#         self.step_name = step_name
+#         self.context = context or {}
 
 class Bot:
     def __init__(self, group_id, token):
@@ -87,7 +88,7 @@ class Bot:
         first_step = scenario['first_step']
         step = scenario['steps'][first_step]
         text_to_send = step['text']
-        self.user_states[user_id] = UserState(scenario_name=scenario_name, step_name=first_step)
+        self.user_states[user_id] = UserState(scenario_name=scenario_name, step_name=first_step, context={})
         return text_to_send
 
     def continue_scenario(self, user_id, text):
